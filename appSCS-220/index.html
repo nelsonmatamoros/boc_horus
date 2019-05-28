@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="referrer" content="no-referrer">
+<title></title>
+
+<link rel="stylesheet" href="css/css_main.css" />
+<!--<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" /> -->
+<link rel="stylesheet" href="css/tigo-theme.min.css" />
+<link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" /> 
+
+<style type="text/css">
+
+.tbl_boc tr:nth-child(even){
+    background-color: #F2F2F2;
+}
+
+.tbl_boc td {
+    padding:5px;
+}
+
+.tbl_boc tr:hover{
+    background-color: #CEF6CE;
+}
+
+</style>
+
+
+</head>
+<body onresize="resizer()" >
+<!--- Splash  -->
+<div id="bg_login" style="position:absolute; background-color:#D8D8D8; z-index:10; width:100%;" >
+</div>
+<!-- Fin Login Frame -->
+
+<div data-role="page" data-theme="a" id="page"  hidden>
+
+    <div data-role="header" id="dvHead" data-position="fixed" style="position:fixed; border:none; padding-left:7px; padding-top:15px; background-color:#0B0B61; color:#FFF; height:35px">
+        <div style="float:left; margin-left:-2px; margin-right:10px; margin-top:-5px; cursor:pointer"><a href="#dvMenu" onclick="resize_img()"><img src="img/menu_icon2.png" width="35px"/></a></div>
+        <div style="float:right; margin-right:20px; margin-top:-3px; cursor:pointer" onclick="backButton()"><img src="img/backicon.png" width="17px"/></div>
+        <label id="lbl_title">SO - Horus</label>
+        <!--<div class="ui-grid-a" id="subHead">
+            <a href="#dvMenu" id="btnM" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-nodisc-icon" style="border:none; margin-right:6px; margin-left:6px; display:none"></a>
+            <span id="dvtitle">-</span>
+            <a href="#dvMenuConfig" id="btnM" style="float:right; border:none; margin-right:6px;" class="ui-btn ui-icon-power ui-btn-icon-notext ui-nodisc-icon" onclick="logout()"></a>
+        </div>-->
+    </div>
+    <div role="main" id='dvContentG' class="ui-content" style="padding:0px; background-color: #F2F2F2;">
+        <!-- Dv Main -->
+        <div id="dvMain" style="margin:15px"> 
+            <!--<div id="float_btn" class="hamburger"  >
+                <a href="#dvMenu" onclick="resize_img()"><img src="img/menu_icon.png" width="100%" /></a>
+            </div>           -->
+        
+            <div id="dvHsuper">
+                <div class="ui-body ui-body-a">
+                    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                        <legend>Tipo Indicador Mapa</legend>
+                        <input type="radio" name="rd_map_type"  id="rdMap1" value="0" checked="checked">
+                        <label for="rdMap1">Inicio</label>
+                        <input type="radio" name="rd_map_type" id="rdMap2" value="1" >
+                        <label for="rdMap2">Desempeño</label>
+                    </fieldset>
+
+                    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                        <legend>GPS Mapa</legend>
+                        <input type="radio" name="rd_map"  id="rdMap3" value="0" checked="checked">
+                        <label for="rdMap3">Loc Actual</label>
+                        <input type="radio" name="rd_map" id="rdMap4" value="1" >
+                        <label for="rdMap4">Recorrido</label>
+                    </fieldset>
+                    <div id="vUsuariosHorus">
+                        <label for="vUsers">Usuarios</label>
+                        <select id="vSelUsers" data-mini="true" onchange="fchangUsr()">
+                            <option value=0>0</option>
+                            <option value=1>1</option>
+                        </select>
+                    </div>
+                    <button id="showDash" style="width:50%; float:right; margin-bottom:15px" data-mini="true" data-theme="b" onclick="getMapDash()">Actualizar Datos</button>
+                    <br /><br /><br />
+                    <hr />
+                    <div id="mapSimbologia" style="margin-top:15px;margin-bottom:15px">
+                        <div class="ui-grid-c">
+                            <div class="ui-block-a">
+                                <center><img src="img/map-marker-gray.png" width="30px" />
+                                    <label style="font-size:0.8em">No Marca</label><label style="font-size:0.8em">0</label>
+                            </div>
+                            <div class="ui-block-b">
+                                <center><img src="img/map-marker-red.png" width="30px" />
+                                    <label style="font-size:0.8em">Mrc Fuera</label><label style="font-size:0.8em">0</label>
+                            </div>
+                            <div class="ui-block-c">
+                                <center><img src="img/map-marker-yellow.png" width="30px" />
+                                    <label style="font-size:0.8em">Mrc Tarde</label><label style="font-size:0.8em">0</label>
+                            </div>
+                            <div class="ui-block-d">
+                                <center><img src="img/map-marker-green.png" width="30px" />
+                                    <label style="font-size:0.8em">Mrc a Tiempo</label><label style="font-size:0.8em">0</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="dvMapDash" style="width:100%; border:solid gray 1px"></div>
+                    <br />
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <label for="updateOnline">Ver en Vivo</label>
+                                <select id="flip_online" data-role="slider" data-mini="true">
+                                    <option value="off">No</option>
+                                    <option value="on">Si</option>
+                                </select>
+                        </div>
+                        <div class="io-block-b">
+                            
+                        </div>
+                    </div>
+                </div>
+                
+            </div><!-- Pagina 1 -->
+            <div id="dvHorus">
+                <div id="mapHorus" style="width:100%; height:150px; margin-bottom:15px"></div>
+                <button id="startGPS" onclick="tracking()">Enviar GPS</button>
+                <button id="stopGPS" onclick="tracking()" data-theme="b">Detener GPS</button>
+
+                <div id="kmts"class="ui-body ui-body-a">
+                    <h3> Recorrido </h3>
+                    <div id="dvHoraini" style="float:right; font-size:0.8em; margin-top:-45px; text-align:right"></div>
+                    <center>
+                    <div id="kmts_num"><h2>0.00 Kmts</h2>
+                    </div>
+                    </center>
+                </div>   
+
+            </div><!-- Pagina 1 -->
+
+        </div>
+        <!-- div main -->  
+    </div>
+    <!-- end dvMain -->
+
+
+    <!-- Menu Lateral -->
+    <div data-role="panel" data-display="overlay" id="dvMenu" data-theme="c" style="position: fixed;">
+        <ul data-role="listview">
+            <li data-icon="false" style="background-color:#0B0B61; border:0; margin-left:-15px; margin-top:10px; margin-bottom:5px">
+                <table width="100%">
+                    <tr><td><center><label style="color:white">SO - Horus</label></center></td></tr>
+                    <tr><td align="center"><img id="imgUser" src="img/salesman.png" width="60%" style="border-radius:50%; margin:5px"/></td></tr>
+                    <tr><td><div id="dvUserName" style="color:white; text-align:center">User Name</div></td></tr>
+                </table>
+                <label style="color:white; text-align:center; font-size:0.7em">..........</label>
+            </li>
+            <li data-icon="false" style="background-color:#0B0B61; border:0; padding:0">
+                <div class="lbar"></div>
+                <button data-icon="ui-btn ui-btn-icon-left ui-icon-home" style="text-align:left; background-color:#0B0B61;border:0; margin:0; margin-left:5px" onclick="switchMenu(0,0)">Inicio</button>
+                <!--<a href="#"  style="background-color: #0B0B61; border:0" onclick="switchMenu(0,0)"><h3>Home</h3></a>-->
+                <!--<a href="#" style="width:15%; margin:1px; height:40px; float:right; border:0px; align:right; background-color: #0B0B61; border:0" class="ui-btn ui-icon-delete ui-icon-notext" data-rel="close" data-target="#dvMenu"></a>-->
+            </li>
+            <li data-icon="false" style="background-color:#0B0B61; border:0; padding:0" id="horusSuper">
+                <div class="lbar"></div>
+                <button data-icon="ui-btn ui-btn-icon-left ui-icon-location" style="text-align:left; background-color:#0B0B61; border:0; margin:0; margin-left:5px;" onclick="switchMenu(0,1)">Horus Supervisor</button>
+                <!--<a href="#" style="background-color: #0B0B61; border:0; border-top:solid thin #0A0A2A" onclick="switchMenu(1,1)"></a>-->
+            </li>
+
+            <li data-icon="false" style="background-color:#0B0B61; border:0; padding:0">
+                <br /><br /><br />
+            </li>
+            <li data-icon="false" style="background-color:#0B0B61; border:0; padding:0">
+                <div class="lbar"></div>
+                <button data-icon="ui-btn ui-btn-icon-left ui-icon-power" style="text-align:left; background-color:#0B0B61; border:0; margin:0; margin-left:5px" onclick="logout()">Cerrar Sesion</button>
+            </li>            
+        </ul>
+    </div>
+    <!-- Fin Menu -->
+    
+</div>
+
+</body>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDK7zdmspryv1mgiWkT6aKVc7c3y2I1Mas&libraries=drawing"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" src="js/js_main.js"></script>
+<script type="text/javascript" src="js/js_db.js"></script>
+<!--<script type="text/javascript" src="js/toast.js"></script>-->
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript">  
+
+    resizer();
+    app.initialize();
+
+function resizer(){
+    vW = $(window).width();
+    vH = $(window).height();
+
+
+    $("#bg_login").css('min-height', $(window).height());
+    $("#dvContentG").css('min-height', $(window).height()-45);
+
+    //$("#float_btn").css({'margin-top':vH-110, 'margin-left': vW - 100});
+    $("#mapHorus").css('min-height', vW*0.6);
+    $("#dvMenu").css({'height': $(window).height(), "overflow":'scroll'});
+    $("#dvMapDash").css('min-height', vW*0.6);
+}      
+</script>
+</html>
